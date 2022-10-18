@@ -46,6 +46,7 @@
                   :data-source="data"
                   :title="'Categories'"
                   :slots="slots"
+                  @edit="edit"
               >
               </BasicTable>
           </div>
@@ -82,6 +83,7 @@ import BasicTable from '../utilities/basic-table.vue';
           ],
           dialogVisible: false,
           newEmployee: {
+            id: null,
             name: null,
             lastname: null,
             rol_id: null,
@@ -114,6 +116,7 @@ import BasicTable from '../utilities/basic-table.vue';
   methods: {
       createEmployee() {
           const formData = new FormData();
+          formData.append("id", this.newEmployee.id);
           formData.append("name", this.newEmployee.name);
           formData.append("lastname", this.newEmployee.lastname);
           formData.append("rol_id", this.newEmployee.rol_id);
@@ -126,7 +129,7 @@ import BasicTable from '../utilities/basic-table.vue';
                   type: "success"
               });
               this.getEmployees();
-              //this.resetMovement();
+              this.resetEmployee();
               this.hideDialog();
           })
               .catch(error => {
@@ -155,22 +158,18 @@ import BasicTable from '../utilities/basic-table.vue';
               //alert(error);
           });
       },
-      updateSatus(id, status) {
-          const formData = new FormData();
-          // parametro
-          // id de categoria
-          formData.append("idcat", id);
-          // status de categoria
-          formData.append("status", status);
-          axios.post("api/category/updateCategory", formData)
+      edit(data){
+        let searchData = { id: data.id }
+        axios.post("employee/editData", searchData)
               .then(response => {
               // limpiar campo
               // cargar lista de nuevo
-              this.listCatService();
+              this.newEmployee = response.data
           })
               .catch(error => {
-              alert(error);
+              //alert(error);
           });
+        this.dialogVisible = true;
       },
       tableRowClassName({ row, rowIndex }) {
           if (row.status === 0) {
@@ -205,11 +204,12 @@ import BasicTable from '../utilities/basic-table.vue';
           })
               .catch(_ => { });
       },
-      resetMovement() {
-          this.newMovement = {
-            employeeId: null,
-            month: null,
-            hours: null,
+      resetEmployee() {
+          this.newEmployee = {
+            id: null,
+            name: null,
+            lastname: null,
+            rol_id: null,
           };
       }
   },

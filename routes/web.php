@@ -36,11 +36,12 @@ Route::group(['prefix'=>'movements'],function(){
 Route::group(['prefix'=>'employees'],function(){
     Route::post('employee/createEmployee','App\Http\Controllers\EmployeeController@createEmployee');
     Route::get('employee/getEmployees','App\Http\Controllers\EmployeeController@getList');
+
     Route::post('employee/getListForSelect','App\Http\Controllers\EmployeeController@getEmployeeForSelect');
     Route::post('employee/updateEmployee','App\Http\Controllers\EmployeeController@update');
     Route::get('employee/getReport','App\Http\Controllers\EmployeeController@getReport');
 });
-
+Route::post('employee/editData','App\Http\Controllers\EmployeeController@searchData');
 
 //roles routes
 Route::group(['prefix'=>'roles'],function(){

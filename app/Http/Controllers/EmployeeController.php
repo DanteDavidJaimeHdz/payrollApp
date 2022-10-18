@@ -26,20 +26,44 @@ class EmployeeController extends Controller
         return $data;
     }
     /**
+     * @method searchData
+     * @author Dante Jaime
+     * @description Method to get List of employees
+     */
+    public function searchData(Request $request){
+        $id = $request->get("id");
+        $data = Employee::select('employees.id', 'employees.name', 'employees.lastname','roles.name as role_name', 'roles.id as rol_id')
+                ->leftJoin('roles', 'roles.id', '=', 'employees.role_id')
+                ->where('employees.id', $id)
+                ->first();
+        return $data;
+    }
+    /**
      * @method createEmployee
      * @author Dante Jaime 
      * @description method to create an Employee
      */
     public function createEmployee (Request $request){
         try {
+            $id = $request->get("id");
             $name = $request->get("name");
             $lastname = $request->get("lastname");
             $role_id = $request->get("rol_id");
-            Employee::insert([
-            'name' => $name,
-            'lastname' => $lastname,
-            'role_id' => $role_id
-            ]);
+            if ($id != 'null') {
+                $employee = Employee::where('id',$id)->first();
+                $employee->name =  $name;
+                $employee->lastname  = $lastname;
+                $employee->role_id = $role_id;
+                $employee->save();
+            }
+            else {
+                Employee::insert([
+                    'name' => $name,
+                    'lastname' => $lastname,
+                    'role_id' => $role_id
+                ]);
+            }
+            
             //returns an array with message success and status
             $response['message'] = "Success!";
             $response['success'] = true;
