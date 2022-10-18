@@ -10,9 +10,10 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
- mix.js('resources/js/app.js', 'public/js')
- .vue()
- .sass('resources/sass/app.scss', 'public/css')
- .css('resources/css/bootstrap.min.css', 'public/css')
- .css('resources/css/style.min.css', 'public/css')
- .css('resources/css/tableStyles.css', 'public/css');
+
+mix.js('resources/js/app.js', 'public/js')
+    .vue()
+    .sass('resources/sass/app.scss', 'public/css')
+    .css('resources/css/bootstrap.min.css', 'public/css')
+    .css('resources/css/style.min.css', 'public/css')
+    .css('resources/css/tableStyles.css', 'public/css');
